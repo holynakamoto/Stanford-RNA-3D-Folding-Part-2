@@ -227,17 +227,26 @@ class RNAStructureModel:
         # Generate structure (first conformation)
         coords_main = self.structure_module.forward(seq_features, msa_features)
         
-        # Generate multiple conformations
-        # In production: use sampling or ensemble
+        # Generate multiple conformations with variable noise scales for diversity
         coords_all = np.zeros((batch_size, seq_len, self.config.num_conformations, 3))
         coords_all[:, :, 0, :] = coords_main
         
-        # Generate other conformations with small perturbations using provided rng
+        # Generate other conformations with scaled perturbations using provided rng
         if rng is None:
             rng = np.random.default_rng()
+        
+        # Use config.noise_scales for conformational diversity
+        noise_scales = self.config.noise_scales
         for conf_idx in range(1, self.config.num_conformations):
-            noise = rng.normal(loc=0.0, scale=2.0, size=coords_main.shape)  # 2Å std dev
-            coords_all[:, :, conf_idx, :] = coords_main + noise
+            # Get noise scale for this conformation (default to incrementing if not enough scales)
+            if conf_idx < len(noise_scales):
+                scale = noise_scales[conf_idx]
+            else:
+                scale = conf_idx * 5.0  # Fallback: 5Å increments
+            
+            # Generate fresh noise for each conformation
+            noise = rng.normal(loc=0.0, scale=1.0, size=coords_main.shape)
+            coords_all[:, :, conf_idx, :] = coords_main + noise * scale
         
         return coords_all
     

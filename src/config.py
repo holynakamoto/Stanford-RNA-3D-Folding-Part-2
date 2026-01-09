@@ -49,7 +49,10 @@ class Config:
     hidden_dim: int = 128
     use_msa: bool = True
     num_conformations: int = 5  # Number of conformations per sequence
-    max_refinement_steps: int = 50
+    max_refinement_steps: int = 0  # Disabled for diversity (was 50)
+    
+    # Conformational diversity settings
+    noise_scales: list = None  # Will be set in __post_init__
     
     # Feature extraction
     position_encoding_dim: int = 128
@@ -75,6 +78,11 @@ class Config:
         ]
         for dir_path in dirs:
             Path(dir_path).mkdir(parents=True, exist_ok=True)
+        
+        # Set default noise scales if not provided
+        # Target RMSDs: [0, ~5, ~10, ~15, ~20] Angstroms
+        if self.noise_scales is None:
+            self.noise_scales = [0.0, 5.0, 10.0, 15.0, 20.0]
 
 
 def get_config(config_name: Optional[str] = None) -> Config:

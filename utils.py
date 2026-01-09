@@ -306,13 +306,14 @@ def backbone_distance_stats(coords: np.ndarray) -> Tuple[float, float]:
     return float(np.mean(dists)), float(np.std(dists))
 
 
-def build_submission_dataframe(sequences_df: pd.DataFrame, predictions: Dict[str, np.ndarray]) -> pd.DataFrame:
+def build_submission_dataframe(sequences_df: pd.DataFrame, predictions: Dict[str, np.ndarray], center: bool = False) -> pd.DataFrame:
     """
     Build submission DataFrame from predictions.
     
     Args:
         sequences_df: DataFrame with target_id and sequence
         predictions: dict[target_id] -> coords (L, K, 3)
+        center: Whether to center coordinates (default: False for preserving diversity)
     Returns:
         DataFrame with SUBMISSION_COLUMNS
     """
@@ -324,12 +325,13 @@ def build_submission_dataframe(sequences_df: pd.DataFrame, predictions: Dict[str
         L, K, _ = coords.shape
         assert K == 5, f"Expected 5 conformations, got {K} for {target_id}"
 
-        # Post-process per conformation
+        # Post-process per conformation (centering disabled by default for diversity)
         proc = np.empty_like(coords)
         for k in range(K):
             c = coords[:, k, :]
-            c = center_coordinates(c)
-            # optional: no scaling; only center
+            if center:
+                c = center_coordinates(c)
+            # No centering by default to preserve conformational diversity
             proc[:, k, :] = c
             m, s = backbone_distance_stats(c)
             if not (4.0 <= m <= 8.0):
