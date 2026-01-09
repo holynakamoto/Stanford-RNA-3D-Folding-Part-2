@@ -1,0 +1,7 @@
+target_id,sequence,temporal_cutoff,description,stoichiometry,all_sequences,ligand_ids,ligand_SMILES
+1ABC_A,GGCGUAGUCC,2025-01-01,Sample RNA 1,A:1,">Chain A
+GGCGUAGUCC",,
+2DEF_B,AUCGAUCGAU,2025-01-02,Sample RNA 2,B:1,">Chain B
+AUCGAUCGAU",,
+3GHI_C,CGAUCGAUCG,2025-01-03,Sample RNA 3,C:1,">Chain C
+CGAUCGAUCG",,

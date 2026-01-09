@@ -1,0 +1,74 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# Kaggle
+submission.csv
+test_sequences.csv
+*.csv.bak
+
+# Competition data (too large for git)
+data/raw/
+data/processed/
+data/msa/
+data/features/
+models/checkpoints/
+models/ensembles/
+cache/
+logs/
+results/
+
+# Keep directory structure but ignore contents
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/msa/.gitkeep
+!data/features/.gitkeep
+!models/checkpoints/.gitkeep
+!models/ensembles/.gitkeep
+!cache/.gitkeep
+!logs/.gitkeep
+!results/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model files (add specific extensions as needed)
+*.pth
+*.pt
+*.h5
+*.ckpt
+*.model
