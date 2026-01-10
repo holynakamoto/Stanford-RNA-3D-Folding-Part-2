@@ -11,7 +11,12 @@ from pathlib import Path
 from Bio import PDB
 from Bio.PDB import PDBIO
 import pandas as pd
-from tqdm import tqdm
+try:
+    from tqdm import tqdm
+except ImportError:
+    # Fallback if tqdm not available
+    def tqdm(iterable, *args, **kwargs):
+        return iterable
 
 DATASET_DIR = "pdb_rna_dataset"
 PDB_DIR = f"{DATASET_DIR}/structures"
@@ -198,7 +203,7 @@ if __name__ == "__main__":
     try:
         import Bio
         import requests
-        import tqdm
+        from tqdm import tqdm
     except ImportError as e:
         print(f"Missing dependency: {e}")
         print("Install with: pip install biopython requests tqdm")
